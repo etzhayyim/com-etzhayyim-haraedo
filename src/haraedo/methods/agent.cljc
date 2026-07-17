@@ -369,3 +369,16 @@
                           (assoc r "route_id" rid "state" ":planned")))
                       (get state "routes" [])))]
     {"plan" {"routes" written "unassigned" (get state "unassigned" [])}}))
+
+(defn- run-nodes [state nodes]
+  (reduce (fn [current node] (merge current (node current))) state nodes))
+
+(defn handle-intake
+  "Execute the standalone intake graph in canonical node order."
+  [state]
+  (run-nodes state [classify-node quote-node match-facility-node schedule-node sticker-node]))
+
+(defn handle-dispatch
+  "Execute the standalone dispatch graph in canonical node order."
+  [state]
+  (run-nodes state [gather-node cluster-node build-routes-node emit-plan-node]))

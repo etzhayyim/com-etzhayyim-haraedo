@@ -32,6 +32,12 @@
   (let [pts (vec (keys COORDS))]
     (is (= (sort (agent/nearest-neighbour pts COORDS DEPOT)) (sort pts)))))
 
+(deftest test-standalone-handlers-are-wired
+  (binding [agent/*datalog* nil]
+    (is (contains? (agent/handle-intake {"items" []}) "sticker_id"))
+    (is (contains? (agent/handle-dispatch {"jurisdiction" "jp.shibuya"
+                                           "date" "2026-07-17"}) "plan"))))
+
 ;; ── 2. node functions with stubbed datalog ──
 (defn- fake-datalog []
   (let [t (atom [])]
@@ -187,7 +193,7 @@
                        (recur (inc i) d start instr maps)))
           :else (recur (inc i) depth start instr maps))))))
 
-(defn- seed [] (slurp (io/file "20-actors/haraedo/kotoba/seed.edn")))
+(defn- seed [] (slurp (io/file "kotoba/seed.edn")))
 
 (deftest test-hazardous-items-not-charged-g3
   (doseq [m (top-level-maps (seed))]

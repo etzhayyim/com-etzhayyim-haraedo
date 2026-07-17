@@ -40,7 +40,7 @@ Backed by two datalog registries: **facility_registry** (worldwide ゴミ処理�
 ## Layout
 
 ```
-20-actors/haraedo/
+repository root/
 ├── manifest.edn          actor manifest (gates, cells, lexicons)
 ├── cells/                Pregel/langgraph + datalog cell definitions
 │   ├── intake.edn            citizen-intake langgraph cell
